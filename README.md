@@ -1,5 +1,5 @@
 # milestone1-code
 
-Run `go build -o scaffold-gen` to build executable file.
+Run `go build -o bin/scaffold-gen` to build executable file.
 
-Run `./scaffold-gen -h` for help.
+Run `bin/scaffold-gen -h` for help.
