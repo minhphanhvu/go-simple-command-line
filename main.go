@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"io"
 )
 
 type projectConfig struct {
@@ -14,9 +15,10 @@ type projectConfig struct {
 	StaticAssets bool
 }
 
-func setupParseFlags(args []string) (projectConfig, error) {
+func setupParseFlags(w io.Writer, args []string) (projectConfig, error) {
 	conf := projectConfig{}
 	genCom := flag.NewFlagSet("scaffold-gen", flag.ExitOnError)
+	genCom.SetOutput(w)
 	genCom.StringVar(&conf.Name, "n", "", "Project name")
 	genCom.StringVar(&conf.localPath, "d", "", "Project location on disk")
 	genCom.StringVar(&conf.RepoURL, "r", "", "Project remote repository URL")
@@ -44,12 +46,12 @@ func validateConf(conf projectConfig) []error {
 	return validateErrors
 }
 
-func generateScaffold(conf projectConfig) {
-	fmt.Fprintf(os.Stdout, "Generating scaffold for project %s in %s\n", conf.Name, conf.localPath)
+func generateScaffold(w io.Writer, conf projectConfig) {
+	fmt.Fprintf(w, "Generating scaffold for project %s in %s\n", conf.Name, conf.localPath)
 }
 
 func main() {
-	conf, err := setupParseFlags(os.Args[1:])
+	conf, err := setupParseFlags(os.Stdout, os.Args[1:])
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -62,5 +64,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	generateScaffold(conf)
+	generateScaffold(os.Stdout, conf)
 }
