@@ -4,8 +4,8 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"os"
 	"io"
+	"os"
 )
 
 type projectConfig struct {
